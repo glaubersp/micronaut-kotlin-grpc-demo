@@ -1,0 +1,6 @@
+applicationType: grpc
+defaultPackage: com.example
+testFramework: junit
+sourceLanguage: kotlin
+buildTool: gradle_kotlin
+features: [annotation-api, app-name, data, data-jdbc, graalvm, gradle, grpc, jdbc-hikari, jib, junit, kotlin, kotlin-application, kotlin-extension-functions, kubernetes, logback, management, mongo-reactive, postgres, properties, r2dbc, readme, security, security-annotations, testcontainers, vertx-pg-client]

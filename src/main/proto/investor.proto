@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option go_package = "com/example";
+option java_multiple_files = true;
+option java_package = "com.example.grpc.investor";
+//option java_outer_classname = "Investor";
+
+package com.example.grpc.investor;
+
+import "google/api/annotations.proto";
+
+service InvestorService{
+  rpc SaveInvestor (SaveInvestorRequest) returns (Investor) {
+    option (google.api.http) = {
+      post: "/investor"
+      body: "*"
+    };
+  }
+  rpc SaveInvestorStream (stream SaveInvestorRequest) returns (stream Investor) {}
+  rpc UpdateInvestor (UpdateInvestorRequest) returns (Investor) {
+    option (google.api.http) = {
+      post: "/investor/{id}"
+      body: "*"
+    };
+  }
+  rpc UpdateInvestorStream (stream UpdateInvestorRequest) returns (stream Investor) {}
+  rpc FindInvestorById (FindInvestorRequest) returns (Investor) {
+    option (google.api.http) = {
+      get: "/investor/{id}"
+    };
+  }
+  rpc FindInvestorByIdStream (stream FindInvestorRequest) returns (stream Investor) {}
+  rpc FindAllInvestorsStream(FindAllInvestorsRequest) returns (stream Investor) {}
+}
+
+message FindInvestorRequest {
+  int64 id = 1;
+}
+
+message FindAllInvestorsRequest {
+  OrderInvestorsBy orderBy = 1;
+}
+
+enum OrderInvestorsBy{
+  DEFAULT = 0;
+  NAME = 1;
+  STREET = 2;
+}
+
+message SaveInvestorRequest {
+  string name = 1;
+  string street = 2;
+  int32 streetNumber = 3;
+  string zipCode = 4;
+}
+
+message UpdateInvestorRequest {
+  int64 id = 1;
+  string name = 2;
+  string street = 3;
+  int32 streetNumber = 4;
+  string zipCode = 5;
+}
+
+message Investor {
+  int64 id = 1;
+  string name = 2;
+  string street = 3;
+  int32 streetNumber = 4;
+  string zipCode = 5;
+}

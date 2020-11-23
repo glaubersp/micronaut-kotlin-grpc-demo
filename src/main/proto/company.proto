@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+option go_package = "com/example";
+option java_multiple_files = true;
+option java_package = "com.example.grpc.company";
+//option java_outer_classname = "Company";
+
+package com.example.grpc.company;
+
+import "google/api/annotations.proto";
+
+service CompanyService{
+  rpc SaveCompany (SaveCompanyRequest) returns (Company){
+    option (google.api.http) = {
+      post: "/company"
+      body: "*"
+    };
+  }
+  rpc SaveCompanyStream (stream SaveCompanyRequest) returns (stream Company){}
+
+  rpc UpdateCompany(UpdateCompanyRequest) returns (Company){
+    option (google.api.http) = {
+      post: "/company/{id}"
+      body: "*"
+    };
+  }
+  rpc UpdateCompanyStream (stream UpdateCompanyRequest) returns (stream Company){}
+
+  rpc FindCompanyById(FindCompanyRequest) returns (Company){}
+  rpc FindAllCompanies(FindAllCompaniesRequest) returns (stream Company){}
+
+  rpc SaveCorporateAddress(SaveCorporateAddressRequest) returns (CorporateAddress){
+    option (google.api.http) = {
+      post: "/company/{companyId}/address"
+      body: "*"
+    };
+  }
+  rpc SaveCorporateAddressStream (stream SaveCorporateAddressRequest) returns (stream CorporateAddress){}
+
+  rpc UpdateCorporateAddress(UpdateCorporateAddressRequest) returns (CorporateAddress){
+    option (google.api.http) = {
+      post: "/company/{companyId}/address/{id}"
+      body: "*"
+    };
+  }
+  rpc UpdateCorporateAddressStream (stream UpdateCorporateAddressRequest) returns (stream CorporateAddress){}
+
+  rpc FindCorporateAddressById(FindCorporateAddressRequest) returns (CorporateAddress){}
+  rpc FindAllCorporateAddressesByCompanyId(FindAllCorporateAddressesRequest) returns (stream CorporateAddress){}
+
+}
+
+message SaveCompanyRequest {
+  string tradeName = 1;
+  string legalName = 2;
+  string corporateAddressStreet = 3;
+  int32 corporateAddressStreetNumber = 4;
+  string corporateAddressZipCode = 5;
+  string investorName = 6;
+  string personalAddressStreet = 7;
+  int32 personalAddressStreetNumber = 8;
+  string personalAddressZipCode = 9;
+}
+
+message UpdateCompanyRequest {
+  int64 id = 1;
+  string tradeName = 2;
+  string legalName = 3;
+}
+
+message FindCompanyRequest {
+  int64 id = 1;
+}
+
+message FindAllCompaniesRequest {
+  int32 page = 1;
+  int32 size = 2;
+}
+
+message FindAllCompaniesResponse {
+  repeated Company companies = 1;
+}
+
+message SaveCorporateAddressRequest {
+  int64 companyId = 1;
+  string street = 2;
+  int32 streetNumber = 3;
+  string zipCode = 4;
+}
+
+message UpdateCorporateAddressRequest {
+  int64 id = 1;
+  int64 companyId = 2;
+  string street = 3;
+  int32 streetNumber = 4;
+  string zipCode = 5;
+}
+
+message FindCorporateAddressRequest {
+  int64 id = 1;
+}
+
+message FindAllCorporateAddressesRequest {
+  int64 companyId = 1;
+}
+
+message Company{
+  int64 id = 1;
+  string tradeName = 2;
+  string legalName = 3;
+}
+
+message CorporateAddress{
+  int64 id = 1;
+  int64 companyId = 2;
+  string street = 3;
+  int32 streetNumber = 4;
+  string zipCode = 5;
+}
